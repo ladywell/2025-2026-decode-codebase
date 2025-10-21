@@ -17,7 +17,27 @@ public class Drive_OpMode extends LinearOpMode {
 
         botHardware.init(hardwareMap);
 
-        waitForStart();
+        // Alliance selection
+        if (Alliance.getInstance().selected != Alliance.Options.UNASSIGNED) {
+            while (!isStarted() && !isStopRequested()) {
+                if (gamepad1.a || gamepad2.a) {
+                    Alliance.getInstance().selected = Alliance.Options.RED;
+                } else if (gamepad1.b || gamepad2.b) {
+                    Alliance.getInstance().selected = Alliance.Options.BLUE;
+                }
+
+                telemetry.addLine("=== Alliance Selection ===");
+                telemetry.addData("Press A", "for RED");
+                telemetry.addData("Press B", "for BLUE");
+                telemetry.addData("Current Selection", Alliance.getInstance().selected);
+                telemetry.update();
+
+                sleep(100);
+            }
+        } else {
+            waitForStart();
+        }
+
         runtime.reset();
     }
 
@@ -53,8 +73,8 @@ public class Drive_OpMode extends LinearOpMode {
         double spinner1_vel = botHardware.spinner1.getVelocity(AngleUnit.DEGREES);
         double spinner2_vel = botHardware.spinner1.getVelocity(AngleUnit.DEGREES);
 
-        double spinner1_rpm = (spinner1_vel * 60 * Bot_Hardware.SPINNER_G_RATIO) / 360;
-        double spinner2_rpm = (spinner2_vel * 60 * Bot_Hardware.SPINNER_G_RATIO) / 360;
+        double spinner1_rpm = (spinner1_vel * 60 * Bot_Hardware.HDHEX_G_RATIO) / 360;
+        double spinner2_rpm = (spinner2_vel * 60 * Bot_Hardware.HDHEX_G_RATIO) / 360;
 
         if (gamepad2.right_trigger > 0.5f){
             botHardware.spinner1.setPower(1);

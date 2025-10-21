@@ -11,7 +11,7 @@ public class Bot_Hardware{
     public DcMotorEx spinner2 = null;
     public DcMotorEx intake = null;
 
-    public static final int SPINNER_G_RATIO = 20;
+    public static final int HDHEX_G_RATIO = 20;
     public static final double WHEEL_RADIUS = 0.03175; // TODO: Fix this
 
     public void init(HardwareMap hardwareMap){
@@ -20,3 +20,5 @@ public class Bot_Hardware{
         intake = hardwareMap.get(DcMotorEx.class, "intake");
     }
 }
+
+
