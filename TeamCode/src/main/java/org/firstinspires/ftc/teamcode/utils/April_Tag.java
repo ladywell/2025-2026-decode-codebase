@@ -1,6 +1,4 @@
-package org.firstinspires.ftc.teamcode;
-
-import com.google.blocks.ftcrobotcontroller.util.CurrentGame;
+package org.firstinspires.ftc.teamcode.utils;
 
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
