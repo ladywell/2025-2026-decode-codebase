@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
 @TeleOp(name="Drive")
 public class Drive_OpMode extends LinearOpMode {
     private final ElapsedTime runtime = new ElapsedTime();
@@ -42,16 +44,49 @@ public class Drive_OpMode extends LinearOpMode {
         // TODO: update motor power
     }
 
+    double calculate_ball_exit_vel(double rpm){
+        double omega = rpm * 2.0 * Math.PI / 60.0; // rad/s
+        return omega * Bot_Hardware.WHEEL_RADIUS; // m/s
+    }
+
     void spinner(){
+        double spinner1_vel = botHardware.spinner1.getVelocity(AngleUnit.DEGREES);
+        double spinner2_vel = botHardware.spinner1.getVelocity(AngleUnit.DEGREES);
+
+        double spinner1_rpm = (spinner1_vel * 60 * Bot_Hardware.SPINNER_G_RATIO) / 360;
+        double spinner2_rpm = (spinner2_vel * 60 * Bot_Hardware.SPINNER_G_RATIO) / 360;
+
         if (gamepad2.right_trigger > 0.5f){
             botHardware.spinner1.setPower(1);
             botHardware.spinner2.setPower(1);
+
+            double average_rpm = (spinner1_rpm + spinner2_rpm) / 2;
+            double ball_vel = calculate_ball_exit_vel(average_rpm);
+            telemetry.addData("Ball Velocity", "Speed: " + ball_vel);
+        } else {
+            botHardware.spinner1.setPower(0);
+            botHardware.spinner2.setPower(0);
         }
+
+        telemetry.addData("Spinner 1", "Encoder: " +
+                spinner1_vel +
+                "TPS\n\r" +
+                "Speed: " +
+                spinner1_rpm+
+                "RPM");
+        telemetry.addData("Spinner 2", "Encoder: " +
+                spinner2_vel +
+                "TPS\n\r" +
+                "Speed: " +
+                spinner2_rpm +
+                "RPM");
     }
 
     void active_intake(){
         if (gamepad2.left_trigger > 0.5f){
             botHardware.intake.setPower(gamepad2.left_trigger);
+        } else {
+            botHardware.intake.setPower(0);
         }
     }
 
