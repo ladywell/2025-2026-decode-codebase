@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.utils;
 
+import org.firstinspires.ftc.teamcode.subsystems.Alliance;
 import org.firstinspires.ftc.teamcode.subsystems.Bot_Hardware;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -12,9 +13,10 @@ import java.util.List;
 
 // High level april tag class built using: https://ftc-docs.firstinspires.org/en/latest/apriltag/vision_portal/apriltag_intro/apriltag-intro.html
 // (C) Ladywell robotics
+// TODO: Get lens intrinsics from https://www.youtube.com/watch?v=bTcCY3DZM0k
 public class April_Tag {
-    private static int RED_TAG_ID = 24;
-    private static int BLUE_TAG_ID = 20;
+    private static final int RED_TAG_ID = 24;
+    private static final int BLUE_TAG_ID = 20;
     private int tag_id = 0;
 
     AprilTagProcessor aprilTagProcessor;
@@ -32,7 +34,7 @@ public class April_Tag {
         visionPortal = new VisionPortal.Builder()
                 .setCamera(botHardware.camera)
                 .addProcessor(aprilTagProcessor)
-                .setCameraResolution(new Size(640, 480))  // TODO: Check values for our camera model
+                .setCameraResolution(new Size(640, 480))  // Best for logitech C720
                 .setStreamFormat(VisionPortal.StreamFormat.YUY2)  // MJPEG format uses less bandwidth than the default YUY2.
                 .enableLiveView(true)
                 .setAutoStopLiveView(true)

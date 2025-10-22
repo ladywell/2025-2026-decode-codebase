@@ -5,10 +5,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.utils.Alliance;
+import org.firstinspires.ftc.teamcode.subsystems.Alliance;
 import org.firstinspires.ftc.teamcode.subsystems.Bot_Hardware;
 
-@TeleOp(name="Drive")
+@TeleOp(name="Drive", group = "!run!")
 public class Drive_OpMode extends LinearOpMode {
     private final ElapsedTime runtime = new ElapsedTime();
     private final Bot_Hardware botHardware = new Bot_Hardware();
