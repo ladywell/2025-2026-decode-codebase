@@ -14,6 +14,7 @@ Our code is organized into separate packages for:
 - **Autonomous** – Pre-programmed routines for the 30-second autonomous period
 - **Subsystems** – Modular hardware and logic components (e.g., drivetrain, intake, shooter)
 - **Utilities** – Common helpers and constants used across the project
+- **Test** – Used for testing opmodes like april tag optimisers
 
 ---
 
