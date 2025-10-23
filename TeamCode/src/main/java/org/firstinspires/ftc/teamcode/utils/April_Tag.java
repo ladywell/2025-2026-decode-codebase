@@ -23,7 +23,7 @@ public class April_Tag {
     AprilTagProcessor.Builder aprilTagProcessorBuilder;
     VisionPortal visionPortal;
 
-    void init(Bot_Hardware botHardware){
+    public void init(Bot_Hardware botHardware){
         aprilTagProcessorBuilder = new AprilTagProcessor.Builder();
         aprilTagProcessorBuilder.setTagLibrary(AprilTagGameDatabase.getCurrentGameTagLibrary())
                 .setDrawAxes(true)
@@ -53,7 +53,7 @@ public class April_Tag {
     }
 
     // Looks for the current tag ID and if found returns a AprilTagDetection object, otherwise returns null
-    AprilTagDetection getAprilTag(){
+    public AprilTagDetection getAprilTag(){
         List<AprilTagDetection> detectionList = aprilTagProcessor.getDetections();
         for (AprilTagDetection detection : detectionList) {
             if (detection.metadata != null && detection.id == tag_id){
@@ -63,7 +63,7 @@ public class April_Tag {
         return null;
     }
 
-    void setState(boolean state){
+    public void setState(boolean state){
         visionPortal.setProcessorEnabled(aprilTagProcessor, state); // Use to manage CPU usage during game
     }
 }
