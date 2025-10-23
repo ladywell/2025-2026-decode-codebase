@@ -13,6 +13,7 @@ public class Bot_Hardware{
 
     public static final int HDHEX_G_RATIO = 20;
     public static final double WHEEL_RADIUS = 0.03175; // TODO: Fix this
+    public static final double WEBCAM_CENTER_TO_SHOOTER = 0;
 
     public void init(HardwareMap hardwareMap){
         spinner1 = hardwareMap.get(DcMotorEx.class, "spinner1");
