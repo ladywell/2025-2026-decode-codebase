@@ -11,8 +11,18 @@ public class Bot_Hardware{
     public DcMotorEx intake = null;
     public WebcamName camera = null;
 
+    // TODO: Uncomment when the motors are attatched
+
+    /*
+    public DcMotorEx frontLeft = null;
+    public DcMotorEx frontRight = null;
+    public DcMotorEx backLeft = null;
+    public DcMotorEx backRight = null;
+    */
+
+
     public static final int HDHEX_G_RATIO = 20;
-    public static final double WHEEL_RADIUS = 0.03175; // TODO: Fix this
+    public static final double WHEEL_RADIUS = 0.045; // 45mm from rev site
     public static final double WEBCAM_CENTER_TO_SHOOTER = 0;
 
     public void init(HardwareMap hardwareMap){
