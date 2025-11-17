@@ -13,12 +13,12 @@ public class Bot_Hardware{
 
     // TODO: Uncomment when the motors are attatched
 
-    /*
+
     public DcMotorEx frontLeft = null;
     public DcMotorEx frontRight = null;
     public DcMotorEx backLeft = null;
     public DcMotorEx backRight = null;
-    */
+
 
 
     public static final int HDHEX_G_RATIO = 20;

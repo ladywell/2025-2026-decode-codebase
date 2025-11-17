@@ -64,12 +64,12 @@ public class Drive_OpMode extends LinearOpMode {
             backRightPower /= max;
         }
         // TODO: uncomment when motors are attatched
-        /*
+
         botHardware.frontRight.setPower(frontRightPower);
         botHardware.frontLeft.setPower(frontLeftPower);
         botHardware.backRight.setPower(backRightPower);
         botHardware.backLeft.setPower(backLeftPower);
-         */
+
     }
 
     double calculate_ball_exit_vel(double rpm){
