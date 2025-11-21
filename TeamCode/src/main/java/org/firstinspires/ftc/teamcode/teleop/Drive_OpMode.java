@@ -63,12 +63,12 @@ public class Drive_OpMode extends LinearOpMode {
             frontRightPower /= max;
             backRightPower /= max;
         }
-        // TODO: uncomment when motors are attatched
+        // hi whoever is reading this i have no idea why this works so just test which way the wheels are spinning and change to negative as needed
 
-        botHardware.frontRight.setPower(frontRightPower);
+        botHardware.frontRight.setPower(-frontRightPower);
         botHardware.frontLeft.setPower(frontLeftPower);
-        botHardware.backRight.setPower(backRightPower);
-        botHardware.backLeft.setPower(backLeftPower);
+        botHardware.backRight.setPower(-backRightPower);
+        botHardware.backLeft.setPower(-backLeftPower);
 
     }
 
