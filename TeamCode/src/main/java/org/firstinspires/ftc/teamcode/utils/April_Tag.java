@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.utils;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.subsystems.Alliance;
 import org.firstinspires.ftc.teamcode.subsystems.Bot_Hardware;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -17,6 +18,8 @@ import java.util.List;
 public class April_Tag {
     private static final int RED_TAG_ID = 24;
     private static final int BLUE_TAG_ID = 20;
+    final int RESOLUTION_WIDTH = 640;
+    final int RESOLUTION_HEIGHT = 480;
     private int tag_id = 0;
 
     AprilTagProcessor aprilTagProcessor;
@@ -30,14 +33,18 @@ public class April_Tag {
                 .setDrawTagOutline(true)
                 .setDrawTagID(true);
         aprilTagProcessor = aprilTagProcessorBuilder.build();
-
+        /*
         visionPortal = new VisionPortal.Builder()
                 .setCamera(botHardware.camera)
                 .addProcessor(aprilTagProcessor)
                 .setCameraResolution(new Size(640, 480))  // Best for logitech C720
                 .setStreamFormat(VisionPortal.StreamFormat.YUY2)  // MJPEG format uses less bandwidth than the default YUY2.
-                .enableLiveView(true)
-                .setAutoStopLiveView(true)
+                .build();
+         */
+
+        visionPortal = new VisionPortal.Builder()
+                .setCamera(botHardware.camera)
+                .setCameraResolution(new Size(RESOLUTION_WIDTH, RESOLUTION_HEIGHT))
                 .build();
 
         switch (Alliance.getInstance().selected){

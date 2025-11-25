@@ -29,11 +29,15 @@ public class Bot_Hardware{
         spinner1 = hardwareMap.get(DcMotorEx.class, "spinner1");
         spinner2 = hardwareMap.get(DcMotorEx.class, "spinner2");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
+<<<<<<< Updated upstream
         camera = hardwareMap.get(WebcamName.class, "camera");
         frontLeft = hardwareMap.get(DcMotorEx.class , "front_left");
         frontRight = hardwareMap.get(DcMotorEx.class, "front_right");
         backLeft = hardwareMap.get(DcMotorEx.class, "back_left");
         backRight = hardwareMap.get(DcMotorEx.class, "back_right");
+=======
+        camera = hardwareMap.get(WebcamName.class, "Webcam 1");
+>>>>>>> Stashed changes
     }
 }
 
