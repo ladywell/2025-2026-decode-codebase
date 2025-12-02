@@ -12,13 +12,10 @@ public class Bot_Hardware{
     public WebcamName camera = null;
 
     // TODO: Uncomment when the motors are attatched
-
-
     public DcMotorEx frontLeft = null;
     public DcMotorEx frontRight = null;
     public DcMotorEx backLeft = null;
     public DcMotorEx backRight = null;
-
 
 
     public static final int HDHEX_G_RATIO = 20;
@@ -29,15 +26,11 @@ public class Bot_Hardware{
         spinner1 = hardwareMap.get(DcMotorEx.class, "spinner1");
         spinner2 = hardwareMap.get(DcMotorEx.class, "spinner2");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
-<<<<<<< Updated upstream
         camera = hardwareMap.get(WebcamName.class, "camera");
-        frontLeft = hardwareMap.get(DcMotorEx.class , "front_left");
-        frontRight = hardwareMap.get(DcMotorEx.class, "front_right");
-        backLeft = hardwareMap.get(DcMotorEx.class, "back_left");
-        backRight = hardwareMap.get(DcMotorEx.class, "back_right");
-=======
-        camera = hardwareMap.get(WebcamName.class, "Webcam 1");
->>>>>>> Stashed changes
+        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
+        frontRight = hardwareMap.get(DcMotorEx.class, "frontLeft");
+        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
+        frontRight = hardwareMap.get(DcMotorEx.class, "frontLeft");
     }
 }
 
