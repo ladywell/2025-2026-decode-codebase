@@ -28,9 +28,9 @@ public class Bot_Hardware{
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         camera = hardwareMap.get(WebcamName.class, "camera");
         frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
-        frontRight = hardwareMap.get(DcMotorEx.class, "frontLeft");
-        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
-        frontRight = hardwareMap.get(DcMotorEx.class, "frontLeft");
+        frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
+        backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
+        backRight = hardwareMap.get(DcMotorEx.class, "backRight");
     }
 }
 

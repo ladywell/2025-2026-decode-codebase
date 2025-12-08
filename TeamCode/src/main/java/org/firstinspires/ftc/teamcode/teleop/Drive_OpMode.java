@@ -63,7 +63,6 @@ public class Drive_OpMode extends LinearOpMode {
             frontRightPower /= max;
             backRightPower /= max;
         }
-        // hi whoever is reading this i have no idea why this works so just test which way the wheels are spinning and change to negative as needed
 
         botHardware.frontRight.setPower(-frontRightPower);
         botHardware.frontLeft.setPower(frontLeftPower);
@@ -111,11 +110,14 @@ public class Drive_OpMode extends LinearOpMode {
     }
 
     void active_intake(){
-        if (gamepad2.left_trigger > 0.5f){
-            botHardware.intake.setPower(gamepad2.left_trigger);
+        if (gamepad2.left_trigger > 0.1f){
+            botHardware.intake.setPower(-gamepad2.left_trigger);
         } else {
             botHardware.intake.setPower(0);
         }
+        telemetry.addData("IntakeSpinner", "Value:"
+        +gamepad2.left_trigger
+        );
     }
 
     void l_update() {
