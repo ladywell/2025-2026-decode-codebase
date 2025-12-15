@@ -77,10 +77,10 @@ public class Drive_OpMode extends LinearOpMode {
     }
     void hooded_launcher(){
         if (gamepad2.dpad_up){
-            botHardware.hoodServo.setPower(0.5);
+            botHardware.hoodServo.setPower(0.15);
         }
         if (gamepad2.dpad_down){
-            botHardware.hoodServo.setPower(-0.5);
+            botHardware.hoodServo.setPower(-0.15);
         }
     }
 

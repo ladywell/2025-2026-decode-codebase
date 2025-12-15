@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
 public class Bot_Hardware{
     public DcMotorEx spinner1 = null;
-    public CRServo hoodServo = null;
+    public DcMotorEx hoodServo = null;
     public DcMotorEx intake = null;
     public WebcamName camera = null;
 
@@ -26,7 +26,7 @@ public class Bot_Hardware{
 
     public void init(HardwareMap hardwareMap){
         spinner1 = hardwareMap.get(DcMotorEx.class, "spinner1");
-        hoodServo = hardwareMap.get(CRServo.class, "hoodServo");
+        hoodServo = hardwareMap.get(DcMotorEx.class, "hoodServo");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         camera = hardwareMap.get(WebcamName.class, "camera");
         frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
