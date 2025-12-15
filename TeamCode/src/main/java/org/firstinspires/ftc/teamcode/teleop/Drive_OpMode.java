@@ -75,6 +75,14 @@ public class Drive_OpMode extends LinearOpMode {
         double omega = rpm * 2.0 * Math.PI / 60.0; // rad/s
         return omega * Bot_Hardware.WHEEL_RADIUS; // m/s
     }
+    void hooded_launcher(){
+        if (gamepad2.dpad_up){
+            botHardware.hoodServo.setPower(0.5);
+        }
+        if (gamepad2.dpad_down){
+            botHardware.hoodServo.setPower(-0.5);
+        }
+    }
 
     void spinner(){
         double spinner1_vel = botHardware.spinner1.getVelocity(AngleUnit.DEGREES);
@@ -85,14 +93,12 @@ public class Drive_OpMode extends LinearOpMode {
 
         if (gamepad2.right_trigger > 0.5f){
             botHardware.spinner1.setPower(1);
-            botHardware.spinner2.setPower(1);
 
             double average_rpm = (spinner1_rpm + spinner2_rpm) / 2;
             double ball_vel = calculate_ball_exit_vel(average_rpm);
             telemetry.addData("Ball Velocity", "Speed: " + ball_vel);
         } else {
             botHardware.spinner1.setPower(0);
-            botHardware.spinner2.setPower(0);
         }
 
         telemetry.addData("Spinner 1", "Encoder: " +
@@ -124,6 +130,7 @@ public class Drive_OpMode extends LinearOpMode {
         drive();
         spinner();
         active_intake();
+        hooded_launcher();
 
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.update();

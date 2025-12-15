@@ -1,13 +1,15 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
 public class Bot_Hardware{
     public DcMotorEx spinner1 = null;
-    public DcMotorEx spinner2 = null;
+    public CRServo hoodServo = null;
     public DcMotorEx intake = null;
     public WebcamName camera = null;
 
@@ -24,7 +26,7 @@ public class Bot_Hardware{
 
     public void init(HardwareMap hardwareMap){
         spinner1 = hardwareMap.get(DcMotorEx.class, "spinner1");
-        spinner2 = hardwareMap.get(DcMotorEx.class, "spinner2");
+        hoodServo = hardwareMap.get(CRServo.class, "hoodServo");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         camera = hardwareMap.get(WebcamName.class, "camera");
         frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
