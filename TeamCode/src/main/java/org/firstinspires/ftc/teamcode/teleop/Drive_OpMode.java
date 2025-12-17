@@ -76,12 +76,14 @@ public class Drive_OpMode extends LinearOpMode {
         return omega * Bot_Hardware.WHEEL_RADIUS; // m/s
     }
     void hooded_launcher(){
-        if (gamepad2.dpad_up){
-            botHardware.hoodServo.setPower(0.15);
+        double gamepadInput = (gamepad2.right_stick_y / 2);
+        if (gamepadInput <= 0.1 && gamepadInput >= -0.1){
+            botHardware.hoodServo.setPower(0);
         }
-        if (gamepad2.dpad_down){
-            botHardware.hoodServo.setPower(-0.15);
+        else;{
+            botHardware.hoodServo.setPower(gamepadInput);
         }
+        telemetry.addData("Hood", "Value:" + gamepadInput);
     }
 
     void spinner(){
