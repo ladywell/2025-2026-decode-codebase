@@ -12,8 +12,6 @@ public class Bot_Hardware{
     public DcMotorEx hoodServo = null;
     public DcMotorEx intake = null;
     public WebcamName camera = null;
-
-    // TODO: Uncomment when the motors are attatched
     public DcMotorEx frontLeft = null;
     public DcMotorEx frontRight = null;
     public DcMotorEx backLeft = null;

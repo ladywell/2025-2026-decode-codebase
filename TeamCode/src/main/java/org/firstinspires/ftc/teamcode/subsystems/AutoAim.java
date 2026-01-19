@@ -1,116 +1,127 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.utils.April_Tag;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
-import java.util.Vector;
-
 public class AutoAim {
-    double AIM_SPEED = 0.9;
-    April_Tag april_tag = new April_Tag();
-    Telemetry telemetry = null;
-    Vector<Double> last_apriltag_position = null;
 
-    public void init(Bot_Hardware botHardware, Telemetry telemetry_instance){
-        april_tag.init(botHardware);
-        telemetry = telemetry_instance;
+    /* ===================== Tunables ===================== */
+
+    private static final double AIM_KP = 1.2;           // Turn strength
+    private static final double MAX_TURN = 0.6;         // Motor cap
+    private static final double GRAVITY = 9.81;         // m/s^2
+
+    /* ===================== State ===================== */
+
+    private final April_Tag aprilTag = new April_Tag();
+    private Telemetry telemetry;
+
+    // Last known tag position (meters, camera frame)
+    private double tagX = 0.0;
+    private double tagY = 0.0;
+    private double tagZ = 0.0;
+    private boolean hasTag = false;
+
+    /* ===================== Init ===================== */
+
+    public void init(Bot_Hardware botHardware, Telemetry telemetry) {
+        aprilTag.init(botHardware);
+        this.telemetry = telemetry;
     }
 
-    double calculate_ball_exit_vel(double rpm){
-        double omega = rpm * 2.0 * Math.PI / 60.0; // rad/s
-        return omega * Bot_Hardware.WHEEL_RADIUS; // m/s
-    }
+    /* ===================== Aiming ===================== */
 
-    double lerp(double a, double b, double t){
-        return a * (1.0 - t) + (b * t);
-    }
-
-    public double[] look_at_apriltag(){
-        if (last_apriltag_position == null){
-            return null;
+    /**
+     * Returns mecanum turn values to face the AprilTag
+     */
+    public double[] getAimPowers() {
+        if (!hasTag) {
+            return new double[]{0, 0, 0, 0};
         }
 
-        double offset = last_apriltag_position.get(0);
-        double speed = AIM_SPEED / 10;
-        double rx = lerp(0, offset, speed) / offset; // returns AIM_SPEED, 0 or -AIM_SPEED depending on where the tag is
+        // tagX is left/right offset
+        double turn = AIM_KP * tagX;
+        turn = clamp(turn, -MAX_TURN, MAX_TURN);
 
-        return new double[]{rx, -rx, rx, rx};
+        // mecanum rotation
+        return new double[]{ turn, -turn, turn, -turn };
     }
 
-    private AprilTagDetection handle_tag(){
-        AprilTagDetection april_tag_detection = april_tag.getAprilTag();
-        if (april_tag_detection != null){
-            last_apriltag_position.clear();
-            switch (april_tag_detection.metadata.distanceUnit){
-                case CM:
-                    last_apriltag_position.setElementAt(april_tag_detection.robotPose.getPosition().x / 100, 0);
-                    last_apriltag_position.setElementAt(april_tag_detection.robotPose.getPosition().y / 100, 1);
-                    last_apriltag_position.setElementAt(april_tag_detection.robotPose.getPosition().z / 100, 2);
-                case MM:
-                    last_apriltag_position.setElementAt(april_tag_detection.robotPose.getPosition().x / 1000, 0);
-                    last_apriltag_position.setElementAt(april_tag_detection.robotPose.getPosition().y / 1000, 1);
-                    last_apriltag_position.setElementAt(april_tag_detection.robotPose.getPosition().z / 1000, 2);
-                case METER:
-                    last_apriltag_position.setElementAt(april_tag_detection.robotPose.getPosition().x, 0);
-                    last_apriltag_position.setElementAt(april_tag_detection.robotPose.getPosition().y, 1);
-                    last_apriltag_position.setElementAt(april_tag_detection.robotPose.getPosition().z, 2);
-                case INCH:
-                    last_apriltag_position.setElementAt(april_tag_detection.robotPose.getPosition().x / 39.37, 0);
-                    last_apriltag_position.setElementAt(april_tag_detection.robotPose.getPosition().y / 39.37, 1);
-                    last_apriltag_position.setElementAt(april_tag_detection.robotPose.getPosition().z / 39.37, 2);
-            }
-        } else {
-            last_apriltag_position = null;
-            return null;
+    /* ===================== AprilTag Handling ===================== */
+
+    private void updateAprilTag() {
+        AprilTagDetection det = aprilTag.getAprilTag();
+
+        if (det == null || det.robotPose == null) {
+            hasTag = false;
+            return;
         }
-        return april_tag_detection;
+
+        // Convert all units to meters
+        double scale = 1;
+        if (det.metadata.distanceUnit == DistanceUnit.MM){
+            scale = 0.001;
+        } else if (det.metadata.distanceUnit == DistanceUnit.CM) {
+            scale = 0.01;
+        } else if (det.metadata.distanceUnit == DistanceUnit.INCH) {
+            scale = 0.0254;
+        }
+
+        tagX = det.robotPose.getPosition().x * scale;
+        tagY = det.robotPose.getPosition().y * scale;
+        tagZ = det.robotPose.getPosition().z * scale;
+
+        hasTag = true;
+
+        telemetry.addData("Tag X (m)", tagX);
+        telemetry.addData("Tag Y (m)", tagY);
+        telemetry.addData("Tag Z (m)", tagZ);
+        telemetry.update();
     }
 
-    private static double[] solveLaunchAngles(double v, double x, double y, double z) {
-        double d = Math.hypot(x, y); // Distance along ground plain
-        double g = 9.81; // Gravity
-        if (d <= 1e-9) { // 1x10^-9
-            return new double[]{};
+    /* ===================== Shooter Math ===================== */
+
+    private double ballExitVelocity(double rpm) {
+        double omega = rpm * 2.0 * Math.PI / 60.0;
+        return omega * Bot_Hardware.WHEEL_RADIUS;
+    }
+
+    /**
+     * Returns the optimal launch angle (radians) or -1 if impossible
+     */
+    public double getLaunchAngle(double motorRPM) {
+        updateAprilTag();
+
+        if (!hasTag) {
+            return -1;
         }
+
+        double v = ballExitVelocity(motorRPM);
+        double d = Math.hypot(tagX, tagY);
+        double h = tagZ - Bot_Hardware.WEBCAM_CENTER_TO_SHOOTER;
 
         double v2 = v * v;
-        double delta = v2*v2 - g*(g*d*d + 2*z*v2);
-        if (delta < 0){
-            return new double[]{};
+        double disc = v2 * v2 - GRAVITY * (GRAVITY * d * d + 2 * h * v2);
+
+        if (disc < 0 || d < 1e-6) {
+            return -1;
         }
 
-        double s = Math.sqrt(delta);
-        double tan1 = (v2 + s) / (g * d);
-        double tan2 = (v2 - s) / (g * d);
-        double th1 = Math.atan(tan1);
-        double th2 = Math.atan(tan2);
+        double sqrt = Math.sqrt(disc);
 
-        if (Math.abs(th1 - th2) < 1e-9) {
-            return new double[]{th1};
-        } else {
-            double low = Math.min(th1, th2);
-            double high = Math.max(th1, th2);
-            return new double[]{low, high};
-        }
+        // Two possible angles
+        double low = Math.atan((v2 - sqrt) / (GRAVITY * d));
+        double high = Math.atan((v2 + sqrt) / (GRAVITY * d));
+
+        // Prefer high arc (more forgiving)
+        return Math.max(low, high);
     }
 
-    public double get_launch_angle(double motor_velocity){
-        double ball_velocity = calculate_ball_exit_vel(motor_velocity);
-        AprilTagDetection detection = handle_tag();
-        if (detection == null){
-            return -1;
-        }
+    /* ===================== Utilities ===================== */
 
-        double[] launchAngles = solveLaunchAngles(ball_velocity,
-                                        last_apriltag_position.get(0),
-                                        last_apriltag_position.get(1),
-                                        last_apriltag_position.get(2) - Bot_Hardware.WEBCAM_CENTER_TO_SHOOTER);
-        if (launchAngles.length == 0) {
-            return -1;
-        }
-        int middle_item = Math.max(launchAngles.length / 2, 1);
-
-        return launchAngles[middle_item];
+    private double clamp(double val, double min, double max) {
+        return Math.max(min, Math.min(max, val));
     }
 }
