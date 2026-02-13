@@ -4,6 +4,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.ftc.FollowerBuilder;
 import com.pedropathing.ftc.drivetrains.MecanumConstants;
+import com.pedropathing.ftc.localization.Encoder;
 import com.pedropathing.ftc.localization.constants.TwoWheelConstants;
 import com.pedropathing.paths.PathConstraints;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -34,7 +35,13 @@ public class Constants {
                             RevHubOrientationOnRobot.LogoFacingDirection.UP,
                             RevHubOrientationOnRobot.UsbFacingDirection.LEFT
                     )
-            );
+            )
+            .forwardPodY(-1.5)
+            .strafePodX(1.5)
+            .forwardEncoderDirection(Encoder.FORWARD)
+            .strafeEncoderDirection(Encoder.REVERSE)
+            .forwardTicksToInches(-0.001478469)
+            .strafeTicksToInches(0.0013875238);
 
     public static PathConstraints pathConstraints =
             new PathConstraints(0.99, 100, 1, 1);
