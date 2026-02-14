@@ -32,7 +32,7 @@ public class Constants {
             .IMU_HardwareMapName("imu")
             .IMU_Orientation(
                     new RevHubOrientationOnRobot(
-                            RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                            RevHubOrientationOnRobot.LogoFacingDirection.FORWARD,
                             RevHubOrientationOnRobot.UsbFacingDirection.LEFT
                     )
             )
