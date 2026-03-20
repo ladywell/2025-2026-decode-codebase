@@ -10,13 +10,13 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 public class Bot_Hardware{
     public DcMotorEx spinner1 = null;
     public DcMotorEx hoodServo = null;
+    public DcMotorEx transfer = null;
     public DcMotorEx intake = null;
     public WebcamName camera = null;
     public DcMotorEx frontLeft = null;
     public DcMotorEx frontRight = null;
     public DcMotorEx backLeft = null;
     public DcMotorEx backRight = null;
-
 
     public static final int HDHEX_G_RATIO = 20;
     public static final double WHEEL_RADIUS = 0.045; // 45mm from rev site
@@ -26,7 +26,8 @@ public class Bot_Hardware{
         spinner1 = hardwareMap.get(DcMotorEx.class, "spinner1");
         hoodServo = hardwareMap.get(DcMotorEx.class, "hoodServo");
         intake = hardwareMap.get(DcMotorEx.class, "intake");
-        camera = hardwareMap.get(WebcamName.class, "camera");
+        transfer = hardwareMap.get(DcMotorEx.class, "transfer");
+        // camera = hardwareMap.get(WebcamName.class, "camera");
         frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
         backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");

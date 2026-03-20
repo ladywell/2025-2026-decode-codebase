@@ -46,7 +46,7 @@ public class Drive_OpMode extends LinearOpMode {
     void drive() {
         float speed_mode = 1 - (gamepad1.right_trigger * 0.5f);
 
-        double y = -gamepad1.left_stick_y * speed_mode;
+        double y = gamepad1.left_stick_y * speed_mode;
         double x = gamepad1.left_stick_x * 1.1 * speed_mode;  // Multiplied by 1.1 because i saw that ftc teams said they find strafing weaker than forwards and backwards
         double rx = gamepad1.right_stick_x * speed_mode;
 
@@ -128,10 +128,15 @@ public class Drive_OpMode extends LinearOpMode {
         );
     }
 
+    void transfer(){
+        botHardware.transfer.setPower(gamepad2.right_stick_y);
+    }
+
     void l_update() {
         drive();
         spinner();
         active_intake();
+        transfer();
         hooded_launcher();
 
         telemetry.addData("Status", "Run Time: " + runtime.toString());
