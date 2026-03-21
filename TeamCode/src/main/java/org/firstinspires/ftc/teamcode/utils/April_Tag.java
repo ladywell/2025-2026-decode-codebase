@@ -44,18 +44,23 @@ public class April_Tag {
 
         visionPortal = new VisionPortal.Builder()
                 .setCamera(botHardware.camera)
+                .addProcessor(aprilTagProcessor)
                 .setCameraResolution(new Size(RESOLUTION_WIDTH, RESOLUTION_HEIGHT))
                 .build();
 
         switch (Alliance.getInstance().selected){
             case RED:
                 tag_id = RED_TAG_ID;
+                break;
             case BLUE:
                 tag_id = BLUE_TAG_ID;
+                break;
             case UNASSIGNED:
                 tag_id = RED_TAG_ID;
+                break;
             default:
                 tag_id = RED_TAG_ID;
+                break;
         }
     }
 
