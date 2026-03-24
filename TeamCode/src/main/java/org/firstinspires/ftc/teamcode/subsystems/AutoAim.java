@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import org.firstinspires.ftc.teamcode.utils.April_Tag;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.teamcode.utils.PIDController;
 
 public class AutoAim {
 
@@ -47,9 +48,15 @@ public class AutoAim {
             }
 
             // --- Apply to mecanum ---
-            botHardware.drive.setWeightedDrivePower(
-                    new Pose2d(0, 0, turn)
-            );
+            double fl = turn;
+            double fr = -turn;
+            double bl = turn;
+            double br = -turn;
+
+            botHardware.frontLeft.setPower(fl);
+            botHardware.frontRight.setPower(fr);
+            botHardware.backLeft.setPower(bl);
+            botHardware.backRight.setPower(br);
 
             double targetSpeed = getShooterSpeed(distance);
 
@@ -78,9 +85,10 @@ public class AutoAim {
             if (aligned && stable && notTurning && atSpeed && now - lastShotTime > 400) {
                 botHardware.transfer.setPower(1);
                 lastShotTime = now;
-                telemetry.addData("Shooting");
+                telemetry.addData("Shooting", true);
             } else {
                 botHardware.transfer.setPower(0);
+                telemetry.addData("Shooting", false);
             }
             telemetry.update();
         } else {

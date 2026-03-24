@@ -6,18 +6,22 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.subsystems.Alliance;
+import org.firstinspires.ftc.teamcode.subsystems.AutoAim;
 import org.firstinspires.ftc.teamcode.subsystems.Bot_Hardware;
+import org.firstinspires.ftc.teamcode.utils.April_Tag;
 
 @TeleOp(name="Drive", group = "!run!")
 public class Drive_OpMode extends LinearOpMode {
     private final ElapsedTime runtime = new ElapsedTime();
     private final Bot_Hardware botHardware = new Bot_Hardware();
+    private final AutoAim autoAim = new AutoAim();
 
     void l_init() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
         botHardware.init(hardwareMap);
+        autoAim.init(botHardware, new April_Tag());
 
         // Alliance selection
         if (Alliance.getInstance().selected != Alliance.Options.UNASSIGNED) {
@@ -68,22 +72,11 @@ public class Drive_OpMode extends LinearOpMode {
         botHardware.frontLeft.setPower(frontLeftPower);
         botHardware.backRight.setPower(-backRightPower);
         botHardware.backLeft.setPower(-backLeftPower);
-
     }
 
     double calculate_ball_exit_vel(double rpm){
         double omega = rpm * 2.0 * Math.PI / 60.0; // rad/s
         return omega * Bot_Hardware.WHEEL_RADIUS; // m/s
-    }
-    void hooded_launcher(){
-        double gamepadInput = (gamepad2.right_stick_y / 2);
-        if (gamepadInput <= 0.1 && gamepadInput >= -0.1){
-            botHardware.hoodServo.setPower(0);
-        }
-        else;{
-            botHardware.hoodServo.setPower(gamepadInput);
-        }
-        telemetry.addData("Hood", "Value:" + gamepadInput);
     }
 
     void spinner(){
@@ -128,6 +121,13 @@ public class Drive_OpMode extends LinearOpMode {
         );
     }
 
+    void auto_aim(){
+        if (gamepad2.right_bumper) {
+            // auto aim here
+            autoAim.aim();
+        }
+    }
+
     void transfer(){
         botHardware.transfer.setPower(gamepad2.right_stick_y);
     }
@@ -137,7 +137,7 @@ public class Drive_OpMode extends LinearOpMode {
         spinner();
         active_intake();
         transfer();
-        hooded_launcher();
+        auto_aim();
 
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.update();
